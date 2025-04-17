@@ -1,0 +1,23 @@
+FROM ubuntu:22.04
+
+LABEL description="StringTie container with precompiled binary"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+    samtools \
+    python3 \
+    python3-pip \
+    zlib1g-dev \
+    libncurses5-dev \
+    libncursesw5-dev \
+    libbz2-dev \
+    liblzma-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://github.com/gpertea/stringtie/releases/download/v2.2.1/stringtie-2.2.1.Linux_x86_64.tar.gz && \
+    tar -xvzf stringtie-2.2.1.Linux_x86_64.tar.gz && \
+    mv stringtie-2.2.1.Linux_x86_64/stringtie /usr/local/bin/ && \
+    rm -rf stringtie-2.2.1.Linux_x86_64* 
+
+ENTRYPOINT ["bash"]
